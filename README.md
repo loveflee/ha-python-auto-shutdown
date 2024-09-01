@@ -62,8 +62,6 @@ shutdown_remote_server(hostname, username, key_path)
 ```
 最後重啟HA
 
-Certainly! Here's the English translation of the content:
-
 ---
 
 ### **HA-Python Auto Shutdown**
