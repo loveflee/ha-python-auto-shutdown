@@ -78,9 +78,11 @@ for server in servers:
     shutdown_remote_server(server['hostname'], server['username'], server['os_type'], key_path)
 
 ```
-最後重啟HA
-將ssh publickey 複製到電腦或nas上
-```cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'```
+重啟HA</br>
+將 ssh publickey 複製到電腦或Linux上</br>
+```
+cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
+```
 
 ---
 
