@@ -94,7 +94,7 @@ your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
 ```
 設定 > 自動化與場景 > 自動化  (新增自動化)
 ```
-alias: ups低電壓e500g6關機 py
+alias: 當達成條件時執行遠端關機 py
 description: ""
 trigger:
   - platform: numeric_state
@@ -111,7 +111,8 @@ action:
     data: {}
 mode: single
 ```
-
+alias：自動化名稱</br>
+entity_id 更改符合環境的設備id,例如sonoff s31 的市電不可用或低於10v?或能獲取市電是有電，或無電狀態的設備id
 ---
 
 Home Assistant (HA) Python Auto Shutdown
