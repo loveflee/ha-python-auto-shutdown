@@ -24,8 +24,8 @@ crtl+s=save , ctrl+x=exit </br>
 shell_command:
   run_python_script_poweroff: "python3 /config/py/poweroff.py"
 ```
-```mkdir -p /config/py```</br>
-編輯 nano 
+```mkdir -p /config/py;nano /config/py/poweroff.py```</br>
+編輯 nano /config/py/poweroff.py
 ```
 import paramiko
 
