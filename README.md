@@ -86,7 +86,7 @@ for server in servers:
 ```
 cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
 ```
-已具備 sudo 權限的user執行下列指令,限制 ha 使用ssh登入系統後, sudo 權限只能執行 poweroff 與 reboot (reboot可省略)
+使用擁有 sudo 權限的帳號登入 Linux 執行下述方式,限制 ha 用 ssh 登入帳號後,該帳號 sudo 只能執行 poweroff 與 reboot (reboot可省略)
 ```
 sudo visudo
 ```
