@@ -164,4 +164,4 @@ This setup should enable you to achieve the remote shutdown of your NAS through 
 
 --- 
 
-This is the translated content. Let me know if you need any further adjustments!
+This is the translated content use chatgpt
