@@ -120,9 +120,42 @@ action:
     data: {}
 mode: single
 ```
-<b>Windows 10</b> 
-
-
+<b>Windows 10</b></br>
+用系統管理員身分執行 PowerShell</br>
+安裝 openssh 與設為開機執行
+```
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+Set-Service -Name sshd -StartupType 'Automatic'
+```
+限制openssh 登入帳號,與登入openssh後顯示提醒存檔,並將在60秒後強制關機
+```
+notepad C:\ProgramData\ssh\sshd_config
+```
+移到文件最下方將
+```
+Match Group administrators
+       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+```
+修改為
+```
+#Match Group administrators
+#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+PasswordAuthentication no
+PubkeyAuthentication yes
+AllowUsers your_account
+Match User your_account
+    ForceCommand shutdown /s /f /t 60 /c "60秒後將關機，請盡快存檔。"
+```
+作用:關閉密碼認證使用ssh publickey認證,允許 your_account 登入,一但有登入行為,顯示醒</br>
+以下指令為重啟ssh載入修改
+```
+Restart-Service sshd
+```
+將上方製作的ssh publickey 複製到下方位置
+提示格式為: ssh-rsa AAAAB3NzaC1後面不能有空格或斷開
+```
+notepad C:\Users\your_account\.ssh\authorized_keys
+```
 
 ---
 Home Assistant (HA) Python Auto Shutdown
