@@ -92,6 +92,26 @@ sudo visudo
 ```
 your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
 ```
+設定 > 自動化與場景 > 自動化  (新增自動化)
+```
+alias: ups低電壓e500g6關機 py
+description: ""
+trigger:
+  - platform: numeric_state
+    entity_id:
+      - sensor.ups_a0_ups_battery_total_voltage
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 30
+    below: 12.9
+condition: []
+action:
+  - service: shell_command.run_python_script_poweroff
+    data: {}
+mode: single
+```
+
 ---
 
 Home Assistant (HA) Python Auto Shutdown
