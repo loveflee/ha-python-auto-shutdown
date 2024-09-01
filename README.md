@@ -14,7 +14,7 @@ chmod 600 /config/ssh/id_rsa
 退出docker容器指令<br>
 ```exit```<br>
 
-關機腳本生成：<br>
+關機腳本：<br>
 nano /config/scripts.yaml
 ```
 shutdown_nas:
