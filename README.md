@@ -83,10 +83,11 @@ for server in servers:
 ```
 cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
 ```
-已具備sudo 權限的user執行下列指令,限制 ha 登入帳號 sudo 權限只能用 sudo 執行 poweroff 與 reboot (reboot可省略)
+已具備 sudo 權限的user執行下列指令,限制 ha 使用ssh登入系統後, sudo 權限只能執行 poweroff 與 reboot (reboot可省略)
 ```
 sudo visudo
 ```
+移到最下方添加以下內容 
 ```
 your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
 ```
