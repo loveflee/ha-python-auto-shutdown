@@ -114,11 +114,12 @@ action:
     data: {}
 mode: single
 ```
+
 alias：自動化名稱</br>
 entity_id 更改符合環境的設備id,例如sonoff s31 的市電電壓,或能獲取市電目前是有電，或無電狀態的設備id</br>
 如果不知道 entity_id 可由 設定 > 裝置與服務 找到能獲取市電狀態設備後點選一下,再點選齒輪,複製 實體ID 將範例的entity_id更改為剛複製的 實體ID
----
 
+---
 Home Assistant (HA) Python Auto Shutdown
 
 This guide is focused on automating the shutdown of remote servers through Home Assistant (HA) using Python. The goal is to simplify the process, making it user-friendly and effective for automating tasks like shutting down NAS devices or PCs over the network.
