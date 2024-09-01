@@ -79,11 +79,17 @@ for server in servers:
 
 ```
 重啟HA</br>
-將 ssh publickey 複製到電腦或Linux上</br>
+將 ssh publickey 複製到電腦或Linux上, your_account=你的帳號名稱 pc_ip=你的電腦ip</br>
 ```
 cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
 ```
-
+已具備sudo 權限的user執行下列指令,限制 ha 登入帳號 sudo 權限只能用 sudo 執行 poweroff 與 reboot (reboot可省略)
+```
+sudo visudo
+```
+```
+your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
+```
 ---
 
 ### **HA-Python Auto Shutdown**
