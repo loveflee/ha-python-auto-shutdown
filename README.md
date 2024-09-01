@@ -151,8 +151,8 @@ Match User your_account
 ```
 Restart-Service sshd
 ```
-將上方製作的ssh publickey 複製到下方位置
-提示格式為: ssh-rsa AAAAB3NzaC1後面不能有空格或斷開
+將上方製作的ssh publickey 複製到下方位置</br>
+格式為: ssh-rsa AAAAB3NzaC1不能有空格或斷開
 ```
 notepad C:\Users\your_account\.ssh\authorized_keys
 ```
