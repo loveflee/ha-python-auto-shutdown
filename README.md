@@ -117,6 +117,8 @@ condition: []
 action:
   - service: shell_command.run_python_script_poweroff
     data: {}
+  - service: hassio.host_shutdown
+    data: {}
 mode: single
 ```
 
