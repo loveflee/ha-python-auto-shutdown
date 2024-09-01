@@ -1,7 +1,6 @@
 # ha-python-auto-shutdown
 home assistant(以下簡稱ha)自動化的應用<br>
-ups 沒有usb數據連接線,如何關閉 Ha 或 讓連接在ups上的設備 關機
-易於使用為宗旨<br>
+UPS沒有USB數據連接線,停電時讓設備與ha關機</br></br>
 在ha上開啟使用者進階模式<br>
 進入到 設定>附加元件>Advanced SSH & Web Terminal(保護模式設定為關閉)<br>
 登入ha ssh後執行以下指令進入到docker產出ssh公私鑰<br>
