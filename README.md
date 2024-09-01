@@ -66,9 +66,10 @@ def shutdown_remote_server(hostname, username, os_type, key_path):
     except Exception as e:
         print(f"Failed to shut down {hostname} ({os_type}): {e}")
 
-# hostname=登入主機ip username=帳號 os_type=作業系統類別自行修改與增加減少
+# hostname=登入主機ip username=登入帳號 os_type=作業系統類別
+# 以下為範例,  自行修改,根據需求增加減少
 servers = [
-    {"hostname": "192.168.222.222", "username": "closeuser", "os_type": "linux"},
+    {"hostname": "192.168.222.222", "username": "your_account", "os_type": "linux"},
     {"hostname": "192.168.222.223", "username": "admin", "os_type": "windows"}
 ]
 key_path = "/config/ssh/id_rsa"  # 更改為 ssh 私鑰檔案路徑,如照上方指令略過既可
