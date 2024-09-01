@@ -113,7 +113,7 @@ chmod 600 /config/ssh/id_rsa
 Exit the Docker container with the exit command.
 Create the Shutdown Script:
 
-Edit scripts.yaml to include the following script for shutting down a PC:
+Edit /config/scripts.yaml to include the following script for shutting down a PC:</br>
 yaml
 ```
 shutdown_nas:
@@ -124,13 +124,13 @@ shutdown_nas:
 Save the file with ctrl+s and exit with ctrl+x.
 Configure Shell Command in Home Assistant:
 
-Add the following configuration in configuration.yaml:
+Add the following configuration in /config/configuration.yaml:</br>
 yaml
 ```
 shell_command:
   run_python_script_poweroff: "python3 /config/py/poweroff.py"
 ```
-Create a directory and script file:
+Create a directory and script file:</br>
 bash
 ```
 mkdir -p /config/py
@@ -180,18 +180,18 @@ key_path = "/config/ssh/id_rsa"  # Adjust if necessary
 # Execute shutdown for each server
 for server in servers:
     shutdown_remote_server(server['hostname'], server['username'], server['os_type'], key_path)
+```
 Restart Home Assistant
-
 Copy the SSH Public Key to Remote Computers:
 
-To copy the SSH public key to your remote computers (replace your_account and pc_ip with the appropriate values):
+To copy the SSH public key to your remote computers (replace your_account and pc_ip with the appropriate values):</br>
 bash
 ```
 cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
 ```
 Set Up Sudo Permissions for Poweroff and Reboot:
 
-If the user has sudo privileges, restrict HA's SSH access so that sudo can only execute poweroff and reboot commands:
+If the user has sudo privileges, restrict HA's SSH access so that sudo can only execute poweroff and reboot commands:</br>
 bash
 ```
 sudo visudo
