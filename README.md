@@ -35,16 +35,16 @@ import paramiko
 
 def shutdown_remote_server(hostname, username, os_type, key_path):
     try:
-        # 创建一个 SSH 客户端对象
+        # SSH 客戶端
         ssh = paramiko.SSHClient()
 
-        # 自动添加不在已知主机列表中的主机密钥
+        # 自動增加不在已知主機列表中的主機密鑰
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-        # 通过密钥进行身份验证并连接到远程主机
+        # 通過私鑰連接
         ssh.connect(hostname, username=username, key_filename=key_path)
 
-        # 根据操作系统类型执行不同的关机命令
+        # 分辨 Linux 或 windows 執行關機指令
         if os_type.lower() == 'linux':
             command = 'sudo poweroff'
         elif os_type.lower() == 'windows':
@@ -57,7 +57,7 @@ def shutdown_remote_server(hostname, username, os_type, key_path):
         # 執行關機指令
         stdin, stdout, stderr = ssh.exec_command(command)
 
-        # 输出执行结果（可以省略）
+        # 列出執行結果
         print(stdout.read().decode())
 
         # 關閉連線
@@ -74,7 +74,7 @@ servers = [
 ]
 key_path = "/config/ssh/id_rsa"  # 更改為 ssh 私鑰檔案路徑,如照上方指令略過既可
 
-# 调用函数执行关机操作
+# 調用函數執行關機指令
 for server in servers:
     shutdown_remote_server(server['hostname'], server['username'], server['os_type'], key_path)
 
