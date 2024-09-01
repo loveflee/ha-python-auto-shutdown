@@ -28,7 +28,9 @@ nano /config/configuration.yaml
 shell_command:
   run_python_script_poweroff: "python3 /config/py/poweroff.py"
 ```
-```mkdir -p /config/py;nano /config/py/poweroff.py```</br>
+```
+mkdir -p /config/py;nano /config/py/poweroff.py
+```
 /config/py/poweroff.py
 ```
 import paramiko
@@ -94,17 +96,18 @@ your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
 ```
 設定 > 自動化與場景 > 自動化  (新增自動化)
 ```
-alias: 當達成條件時執行遠端關機 py
+alias: pc shutdown
 description: ""
 trigger:
-  - platform: numeric_state
+  - platform: state
     entity_id:
-      - sensor.ups_a0_ups_battery_total_voltage
+      - sensor.apc_input_voltage
+    from: null
     for:
       hours: 0
-      minutes: 0
-      seconds: 30
-    below: 12.9
+      minutes: 1
+      seconds: 0
+    to: unavailable
 condition: []
 action:
   - service: shell_command.run_python_script_poweroff
@@ -112,7 +115,8 @@ action:
 mode: single
 ```
 alias：自動化名稱</br>
-entity_id 更改符合環境的設備id,例如sonoff s31 的市電不可用或低於10v?或能獲取市電是有電，或無電狀態的設備id
+entity_id 更改符合環境的設備id,例如sonoff s31 的市電電壓,或能獲取市電目前是有電，或無電狀態的設備id</br>
+如果不知道 entity_id 可由 設定 > 裝置與服務 找到能獲取市電狀態設備後點選一下,再點選齒輪,複製 實體ID 將範例的entity_id更改為剛複製的 實體ID
 ---
 
 Home Assistant (HA) Python Auto Shutdown
