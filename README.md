@@ -144,9 +144,9 @@ PasswordAuthentication no
 PubkeyAuthentication yes
 AllowUsers your_account
 Match User your_account
-    ForceCommand shutdown /s /f /t 60 /c "60秒後將關機，請盡快存檔。"
+    ForceCommand shutdown /s /f /t 60 /c "60秒後將關機，請盡快存檔"
 ```
-作用:關閉密碼認證使用ssh publickey認證,允許 your_account 登入,一但有登入行為,顯示醒</br>
+作用:關閉密碼認證使用ssh publickey認證,允許 your_account 登入,一但有登入行為,顯示提醒 "60秒後將關機，請盡快存檔" </br>
 以下指令為重啟ssh載入修改
 ```
 Restart-Service sshd
