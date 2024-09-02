@@ -189,7 +189,7 @@ This is an automation application for Home Assistant (referred to as HA below). 
    notepad C:\Users\your_account\.ssh\authorized_keys
    ```
    - Paste the SSH public key created earlier into this file. The format should be: `ssh-rsa AAAAB3NzaC1...` (ensure there are no spaces or breaks).
-copy HA ssh publickey and paste
+5. **copy HA ssh publickey and paste to windows**
 ```
 cat /config/ssh/id_rsa
 ```
