@@ -158,111 +158,195 @@ notepad C:\Users\your_account\.ssh\authorized_keys
 ```
 
 ---
-Home Assistant (HA) Python Auto Shutdown
+Here's the translated document into English:
 
-This guide is focused on automating the shutdown of remote servers through Home Assistant (HA) using Python. The goal is to simplify the process, making it user-friendly and effective for automating tasks like shutting down NAS devices or PCs over the network.
+# ha-python-auto-shutdown
 
-Enable Advanced Mode in Home Assistant:
+This is an automation application for Home Assistant (referred to as HA below). It is designed to shut down devices and HA during a power outage when the UPS does not have a USB data connection cable.
 
-Go to Settings > Add-ons > Advanced SSH & Web Terminal and turn off the protection mode.
-Access HA via SSH and execute the following commands to generate SSH keys within the Docker container:
-bash
-```
-docker exec -it homeassistant bash
-ssh-keygen -t rsa -b 2048 -f /root/.ssh/id_rsa
-mkdir -p /config/ssh/
-cp /root/.ssh/* /config/ssh/
-chmod 600 /config/ssh/id_rsa
-```
-Exit the Docker container with the exit command.
-Create the Shutdown Script:
+## Steps:
 
-Edit /config/scripts.yaml to include the following script for shutting down a PC:</br>
-yaml
-```
-shutdown_nas:
-  alias: 'Shutdown: pc'
-  sequence:
-  - service: shell_command.run_python_script_poweroff
-```
-Save the file with ctrl+s and exit with ctrl+x.
-Configure Shell Command in Home Assistant:
+1. **Enable Advanced Mode in HA:**
+   - Go to `Settings > Add-ons > Advanced SSH & Web Terminal` (set Protection Mode to off).
 
-Add the following configuration in /config/configuration.yaml:</br>
-yaml
-```
-shell_command:
-  run_python_script_poweroff: "python3 /config/py/poweroff.py"
-```
-Create a directory and script file:</br>
-bash
-```
-mkdir -p /config/py
-nano /config/py/poweroff.py
-```
-Python Script for Shutdown:
+2. **Generate SSH Key Pair:**
+   - Log in to HA via SSH and execute the following commands to generate an SSH key pair in the Docker container:
+   ```bash
+   docker exec -it homeassistant bash;
+   ssh-keygen -t rsa -b 2048 -f /root/.ssh/id_rsa;
+   mkdir -p /config/ssh/;
+   cp /root/.ssh/* /config/ssh/;
+   chmod 600 /config/ssh/id_rsa
+   ```
+   - Exit the Docker container using the command:
+   ```bash
+   exit
+   ```
 
-Use the following Python code in poweroff.py to shut down both Linux and Windows servers:
-python
-```
-import paramiko
+3. **Shutdown Script:**
+   - Open the `scripts.yaml` file:
+   ```bash
+   nano /config/scripts.yaml
+   ```
+   - Add the following content:
+   ```yaml
+   shutdown_nas:
+     alias: 'Shutdown: PC'
+     sequence:
+     - service: shell_command.run_python_script_poweroff
+   ```
+   - Save and exit using `Ctrl + S` (Save) and `Ctrl + X` (Exit).
 
-def shutdown_remote_server(hostname, username, os_type, key_path):
-    try:
-        # SSH Client
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(hostname, username=username, key_filename=key_path)
+4. **Configure Shell Command in HA:**
+   - Open the `configuration.yaml` file:
+   ```bash
+   nano /config/configuration.yaml
+   ```
+   - Add the following content:
+   ```yaml
+   shell_command:
+     run_python_script_poweroff: "python3 /config/py/poweroff.py"
+   ```
 
-        # Determine OS type and execute shutdown command
-        if os_type.lower() == 'linux':
-            command = 'sudo poweroff'
-        elif os_type.lower() == 'windows':
-            command = 'shutdown /s /f /t 0'
-        else:
-            print(f"Unsupported OS type: {os_type}")
-            ssh.close()
-            return
+5. **Create the Python Script:**
+   - Create a directory and a Python script:
+   ```bash
+   mkdir -p /config/py;nano /config/py/poweroff.py
+   ```
+   - Add the following code to the script:
+   ```python
+   import paramiko
 
-        # Execute shutdown command
-        stdin, stdout, stderr = ssh.exec_command(command)
-        print(stdout.read().decode())
+   def shutdown_remote_server(hostname, username, os_type, key_path):
+       try:
+           # SSH Client
+           ssh = paramiko.SSHClient()
 
-        # Close SSH connection
-        ssh.close()
-        print(f"Successfully shut down {hostname} ({os_type})")
-    except Exception as e:
-        print(f"Failed to shut down {hostname} ({os_type}): {e}")
+           # Automatically add keys for unknown hosts
+           ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-# Define the servers and their details
-servers = [
-    {"hostname": "192.168.222.222", "username": "your_account", "os_type": "linux"},
-    {"hostname": "192.168.222.223", "username": "admin", "os_type": "windows"}
-]
-key_path = "/config/ssh/id_rsa"  # Adjust if necessary
+           # Connect using the private key
+           ssh.connect(hostname, username=username, key_filename=key_path)
 
-# Execute shutdown for each server
-for server in servers:
-    shutdown_remote_server(server['hostname'], server['username'], server['os_type'], key_path)
-```
-Restart Home Assistant
-Copy the SSH Public Key to Remote Computers:
+           # Determine whether to execute the shutdown command for Linux or Windows
+           if os_type.lower() == 'linux':
+               command = 'sudo poweroff'
+           elif os_type.lower() == 'windows':
+               command = 'shutdown /s /f /t 0'
+           else:
+               print(f"Unsupported OS type: {os_type}")
+               ssh.close()
+               return
 
-To copy the SSH public key to your remote computers (replace your_account and pc_ip with the appropriate values):</br>
-bash
-```
-cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
-```
-Set Up Sudo Permissions for Poweroff and Reboot:
+           # Execute the shutdown command
+           stdin, stdout, stderr = ssh.exec_command(command)
 
-If the user has sudo privileges, restrict HA's SSH access so that sudo can only execute poweroff and reboot commands:</br>
-bash
-```
-sudo visudo
-```
-Add the following line at the end:
-```
-your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
-```
-This setup will allow you to automate the shutdown of Linux and Windows servers through Home Assistant with minimal intervention.
+           # Display the result
+           print(stdout.read().decode())
+
+           # Close the connection
+           ssh.close()
+           print(f"Successfully shut down {hostname} ({os_type})")
+       except Exception as e:
+           print(f"Failed to shut down {hostname} ({os_type}): {e}")
+
+   # Define servers with hostname, username, and OS type (adjust as needed)
+   servers = [
+       {"hostname": "192.168.222.222", "username": "your_account", "os_type": "linux"},
+       {"hostname": "192.168.222.223", "username": "admin", "os_type": "windows"}
+   ]
+   key_path = "/config/ssh/id_rsa"  # Modify to your SSH private key path if necessary
+
+   # Execute shutdown command for each server
+   for server in servers:
+       shutdown_remote_server(server['hostname'], server['username'], server['os_type'], key_path)
+   ```
+
+6. **Restart HA:**
+
+7. **Copy SSH Public Key to PC or Linux:**
+   - Copy the SSH public key to your PC or Linux machine. Replace `your_account` with your username and `pc_ip` with your PC's IP:
+   ```bash
+   cat /config/ssh/id_rsa.pub | ssh your_account@pc_ip 'mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys'
+   ```
+
+8. **Set Up Sudo Permissions on Linux:**
+   - Log in to Linux with a user that has sudo privileges and restrict the HA user to only execute `poweroff` and `reboot` commands (reboot can be omitted):
+   ```bash
+   sudo visudo
+   ```
+   - Add the following at the bottom of the file:
+   ```bash
+   your_account ALL=(root) NOPASSWD: /sbin/poweroff, /sbin/reboot
+   ```
+
+9. **Configure Automation in HA:**
+   - Go to `Settings > Automations & Scenes > Automations` (create a new automation).
+   - Description: Monitor the UPS APC power status. When it becomes unavailable for 1 minute, execute `shell_command.run_python_script_poweroff` to shut down devices and HA.
+   - Alias: Name your automation.
+   - `entity_id`: Modify to match your environment's device ID, such as a Sonoff S31 or PZEM017 that can detect power voltage. If you don't know the `entity_id`, go to `Settings > Devices & Services`, find the device that can detect power status, click on it, and copy the `entity_id`. Replace the example `entity_id` with the copied ID.
+   ```yaml
+   alias: PC Shutdown
+   description: ""
+   trigger:
+     - platform: state
+       entity_id:
+         - sensor.apc_input_voltage
+       from: null
+       for:
+         hours: 0
+         minutes: 1
+         seconds: 0
+       to: unavailable
+   condition: []
+   action:
+     - service: shell_command.run_python_script_poweroff
+       data: {}
+     - service: hassio.host_shutdown
+       data: {}
+   mode: single
+   ```
+
+## **Windows 10 Setup:**
+
+1. **Install OpenSSH and Set to Start Automatically:**
+   - Run PowerShell as Administrator and execute:
+   ```bash
+   Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+   Set-Service -Name sshd -StartupType 'Automatic'
+   ```
+
+2. **Restrict SSH Login and Force Shutdown:**
+   - Edit the SSH configuration:
+   ```bash
+   notepad C:\ProgramData\ssh\sshd_config
+   ```
+   - Scroll to the bottom of the file and change:
+   ```bash
+   Match Group administrators
+          AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+   ```
+   - To:
+   ```bash
+   #Match Group administrators
+   #       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+   PasswordAuthentication no
+   PubkeyAuthentication yes
+   AllowUsers your_account
+   Match User your_account
+       ForceCommand shutdown /s /f /t 60 /c "System will shut down in 60 seconds. Please save your work."
+   ```
+   - This configuration disables password authentication, uses SSH public key authentication, allows `your_account` to log in, and displays a warning message "System will shut down in 60 seconds. Please save your work" upon login.
+
+3. **Restart SSH to Apply Changes:**
+   ```bash
+   Restart-Service sshd
+   ```
+
+4. **Copy SSH Public Key to Windows:**
+   - Open the `authorized_keys` file:
+   ```bash
+   notepad C:\Users\your_account\.ssh\authorized_keys
+   ```
+   - Paste the SSH public key created earlier into this file. The format should be: `ssh-rsa AAAAB3NzaC1...` (ensure there are no spaces or breaks).
 This is the translated content use chatgpt
