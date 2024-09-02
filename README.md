@@ -1,4 +1,4 @@
-[#繁體中文](#繁體中文點我)</br>
+[#繁體中文點我](#繁體中文)</br>
 Here's the translated document into English:
 
 # ha-python-auto-shutdown
