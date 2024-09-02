@@ -353,13 +353,14 @@ Match User your_account
 ```
 Restart-Service sshd
 ```
-將上方製作的ssh publickey 複製到下方位置</br>
+將上方製作的ssh publickey 複製到windows的位置</br>
 格式為: ssh-rsa AAAAB3NzaC1不能有空格或斷開</br>
-copy HA ssh publickey and paste
+copy HA ssh publickey and paste</br>
+Ha ssh 公鑰
 ```
 cat /config/ssh/id_rsa
 ```
-windown path
+window的檔案路徑 your_account 為你的帳號名稱
 ```
 notepad C:\Users\your_account\.ssh\authorized_keys
 ```
