@@ -191,8 +191,8 @@ This is an automation application for Home Assistant (referred to as HA below). 
    - Paste the SSH public key created earlier into this file. The format should be: `ssh-rsa AAAAB3NzaC1...` (ensure there are no spaces or breaks).
 This is the translated content use chatgpt
 ---
-# 繁體中文
-# ha-python-auto-shutdown
+#繁體中文
+
 home assistant(以下簡稱ha)自動化的應用<br>
 UPS沒有USB數據連接線,停電時讓設備與ha關機</br></br>
 在ha上開啟使用者進階模式<br>
