@@ -189,6 +189,14 @@ This is an automation application for Home Assistant (referred to as HA below). 
    notepad C:\Users\your_account\.ssh\authorized_keys
    ```
    - Paste the SSH public key created earlier into this file. The format should be: `ssh-rsa AAAAB3NzaC1...` (ensure there are no spaces or breaks).
+copy HA ssh publickey and paste
+```
+cat /config/ssh/id_rsa
+```
+windown path
+```
+notepad C:\Users\your_account\.ssh\authorized_keys
+```
 This is the translated content use chatgpt
 ---
 # 繁體中文
@@ -346,7 +354,12 @@ Match User your_account
 Restart-Service sshd
 ```
 將上方製作的ssh publickey 複製到下方位置</br>
-格式為: ssh-rsa AAAAB3NzaC1不能有空格或斷開
+格式為: ssh-rsa AAAAB3NzaC1不能有空格或斷開</br>
+copy HA ssh publickey and paste
+```
+cat /config/ssh/id_rsa
+```
+windown path
 ```
 notepad C:\Users\your_account\.ssh\authorized_keys
 ```
