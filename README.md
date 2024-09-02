@@ -53,7 +53,7 @@ This is an automation application for Home Assistant (referred to as HA below). 
    ```bash
    mkdir -p /config/py;nano /config/py/poweroff.py
    ```
-   - Add the following code to the script:
+   - Add the following code to the script(chatGPT make):
    ```python
    import paramiko
 
