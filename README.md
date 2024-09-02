@@ -1,6 +1,5 @@
-[繁體中文點我](#繁體中文)</br>
+[繁體中文點我](#繁體中文)</br></br>
 Here's the translated document into English:
-
 # ha-python-auto-shutdown
 
 This is an automation application for Home Assistant (referred to as HA below). It is designed to shut down devices and HA during a power outage when the UPS does not have a USB data connection cable.
